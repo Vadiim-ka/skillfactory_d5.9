@@ -1,0 +1,133 @@
+Запуск Django shell:
+python manage.py shell
+
+1) Создать двух пользователей с помощью метода User.objects.create_user:
+from NPor.models import User
+u1 = User.objects.create_user('Давид')
+u2 = User.objects.create_user('Артем')
+u3 = User.objects.create_user('Мария')
+
+2) Создать два объекта модели Author, связанные с пользователями:
+from NPor.models import Author
+Author.objects.create(user=u1)
+Author.objects.create(user=u2)
+
+
+3) Добавить 4 категории в модель Category:
+from NPor.models import Category
+Category.objects.create(category_name = 'Кино')
+Category.objects.create(category_name = 'Домашние животные')
+Category.objects.create(category_name = 'Образование')
+Category.objects.create(category_name = 'Программирование')
+
+4) Добавить 2 статьи и 1 новость:
+author = Author.objects.get(id=1)
+// Буквы 'Н' и 'С' русские
+Post.objects.create(author=author, post_type = 'Н', title = 'Гипоаллергенные кошки эт
+о миф?', text = 'Главная боль аллергиков с любовью к кошка скоро будет решена . Кошачий г
+ен Fel d 1 ответственен за большинство случаев аллергии на кошек - около 95% ученые из би
+отехнической лаборатории InBio в США рассчитывают , что в будущем этот ген удасться забло
+кировать . ')
+Post.objects.create(author=author, post_type = 'С', title = 'Самые распространенные языки программирования',text =
+'1.JavaScript 2.Python 3.Java 4.PHP 5.C#  Первая тройка языков имеет огромное количество пакетов и инструментов ,
+а каждый пакет любого языка - это по сути , маленький язык,написанный с помощью языка юольшого.')
+Post.objects.create(author= author2, post_type = 'С', title = 'Съемки новой Планеты обезьян подошли к завершению',
+text = 'Релиз продолжения ребута олдовой научно-фантастической серии, носящего имя Планета обезьян : Королевство ,
+намечен на май 2024 годв. На днях режиссер данного проекта Уэс Болл сообщил о том , что съемки ленты официально
+завершены .')
+
+5)Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий):
+// Присваиваем одному посту две категории
+p1 = Post.objects.get(id=2)
+p1.post_category.add(Category.objects.get(id=3))
+p1.post_category.add(Category.objects.get(id=4))
+p2 = Post.objects.get(id=3)
+p2.post_category.add(Category.objects.get(id=1))
+p3 = Post.objects.get(id=1)
+p3.post_category.add(Category.objects.get(id=2))
+
+6) Создать как минимум 4 комментария к разным объектам модели Post (в каждом объекте должен быть как
+минимум один комментарий):
+from NPor.models import Comment
+Comment.objects.create(post = Post.objects.get(id=1), user = User.objects.get(id=1), comment_text = 'Моя мечта !')
+Comment.objects.create(post=Post.objects.get(id=1), user=User.objects.get(id=2), commen_text = 'Как думаете, для кошек
+это не вредно ? ')
+Comment.objects.create(post=Post.objects.get(id=2), user=User.objects.get(id=3), comment_text = 'А какже С++ ')
+Comment.objects.create(post=Post.objects.get(id=3), user=User.objects.get(id=1), comment_text = 'Один из моих любимых
+фильмов , жду с нетерпением ')
+Comment.objects.create(post=Post.objects.get(id=3), user=User.objects.get(id=2), comment_text = 'Будет очень интересно !')
+Comment.objects.create(post=Post.objects.get(id=3), user=User.objects.get(id=3), comment_text = 'Ждем 24 года')
+
+7) Применяя функции like() и dislike() к статьям/новостям и комментариям, скорректировать рейтинги этих объектов.
+
+// Комментарии
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=1).dislike()
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=1).like()
+Comment.objects.get(id=3).like()
+Comment.objects.get(id=3).like()
+Comment.objects.get(id=3).like()
+Comment.objects.get(id=3).dislike()
+Comment.objects.get(id=2).like()
+Comment.objects.get(id=2).like()
+Comment.objects.get(id=2).like()
+Comment.objects.get(id=2).like()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=4).like()
+Comment.objects.get(id=4).dislike()
+Comment.objects.get(id=2).dislike()
+Comment.objects.get(id=5).like()
+Comment.objects.get(id=5).like()
+Comment.objects.get(id=5).like()
+Comment.objects.get(id=5).like()
+Comment.objects.get(id=5).like()
+Comment.objects.get(id=5).like()
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=6).like()
+Comment.objects.get(id=6).dislike()
+Comment.objects.get(id=5).dislike()
+
+// Посты
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).like()
+Post.objects.get(id=1).dislike()
+Post.objects.get(id=2).like()
+Post.objects.get(id=2).like()
+Post.objects.get(id=2).like()
+Post.objects.get(id=2).like()
+Post.objects.get(id=2).dislike()
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).like()
+Post.objects.get(id=3).like()
+
+8) Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта):
+Author.objects.order_by('author_rating').last().user.username
+Author.objects.order_by('author_rating').last().author_rating
+
+9) Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи,
+основываясь на лайках/дислайках к этой статье:
+
+a = Post.objects.order_by('rating').first()
+a.time_create
+a.author.user.username
+a.rating
+a.title
+a.preview()
+
+10) Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье:
+
+comments=Comment.objects.all().filter(post_id=a.id)
+for comment in comments:
+     print(comment.created_com)
+     print(User.objects.get(id=comment.user_id))
+     print(comment.rating_com)
+     print(comment.comment_text)
